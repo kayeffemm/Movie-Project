@@ -6,7 +6,7 @@ class IStorage(ABC):
     Abstract interface class which includes function definitions to implement in its subclasses
     """
     @abstractmethod
-    def get_movies_data(self):
+    def get_movies_data(self) -> list[dict]:
         """List all movies from database"""
         pass
 

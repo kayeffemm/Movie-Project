@@ -1,6 +1,5 @@
 import json
 import os.path
-
 from classes.istorage import IStorage
 
 
