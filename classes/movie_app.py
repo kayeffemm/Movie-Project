@@ -258,7 +258,8 @@ class MovieApp:
             except ValueError:
                 print("Invalid, please enter a number!")
 
-    def run(self):
+    def run(self) -> None:
+        """Instantiates MovieMenu to run the menu"""
         from classes.movie_menu import MovieMenu
         movie_menu = MovieMenu()
         movie_menu.run(self)

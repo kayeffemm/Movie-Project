@@ -1,8 +1,8 @@
 class MovieMenu:
-    def __str__(self):
+    def __str__(self) -> str:
         """
         This method will manually return the menu as a string.
-        You can customize this as per your needs.
+        Needs to be updated according to changes in MovieApp class.
         """
         return """
         1. Add movie
@@ -19,15 +19,14 @@ class MovieMenu:
         Q. Quit
         """
 
-    def run(self, movie_app):
+    def run(self, movie_app) -> None:
         """
-        This method will handle user input, execute the corresponding method from MovieApp.
+        This method will handle user input and execute the corresponding method from MovieApp.
         """
         while True:
-            print(self)  # Display the menu
+            print(self)
             user_input = input("Choose an action: ").strip().lower()
 
-            # Check for 'quit' or 'Q' input to exit
             match user_input:
                 case 'q' | 'quit':
                     print("Exiting the menu.")
