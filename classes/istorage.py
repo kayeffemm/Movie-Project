@@ -26,7 +26,7 @@ class IStorage(ABC):
         pass
 
     @abstractmethod
-    def validate_existence(self) -> bool:
+    def secure_existence(self) -> bool:
         """Checks if requested file does exist, returns bool"""
         pass
 

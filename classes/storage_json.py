@@ -1,5 +1,7 @@
 import json
-from istorage import IStorage
+import os.path
+
+from classes.istorage import IStorage
 
 
 class StorageJson(IStorage):
@@ -68,18 +70,15 @@ class StorageJson(IStorage):
         with open(self._filepath, "w") as file_writer:
             json.dump(movies, file_writer, indent=4)
 
-    def validate_existence(self) -> bool:
+    def secure_existence(self) -> bool:
         """
         Checks if the file exists and returns True, if file does not exist
         calls write_default_data and returns True, so validate_data can continue with validating
         """
-        try:
-            with open(self._filepath, "r") as json_file:
-                return True
-        except FileNotFoundError:
+        if not os.path.isfile(self._filepath):
             print("File does not exist, creating default Data")
             self.write_default_data()
-            return True
+        return True
 
     def validate_data(self) -> bool:
         """
@@ -87,8 +86,9 @@ class StorageJson(IStorage):
         if there is data to work with it reads the data and checks
         if data is valid. In case data is invalid it calls write_default_data()
         :returns: boolean
+        :todo: separate creation and validity
         """
-        data_exists = self.validate_existence()
+        data_exists = self.secure_existence()
         if data_exists:
             try:
                 with open(self._filepath, "r") as json_file:
