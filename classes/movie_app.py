@@ -186,7 +186,7 @@ class MovieApp:
         """
         Asks user for filter criteria, validates input with get_float_input() and get_int_input()
         and creates a new list with filter applied.
-        If there are movies matching the filter prints them out, if not it prints a error message.
+        If there are movies matching the filter prints them out, if not it prints an error message.
         """
         movies = self._storage.get_movies_data()
         minimum_rating = self.get_float_input("Enter minimum rating, leave blank for no filter: ")
@@ -210,8 +210,12 @@ class MovieApp:
         else:
             print("\nThere are no movies with your filters applied.")
 
+    def generate_website(self):
+        """"""
+        pass
+
     @staticmethod
-    def get_printable_string_from_tuple(self, a_list: list[tuple]) -> str:
+    def get_printable_string_from_tuple(a_list: list[tuple]) -> str:
         """
         Helper function to convert list of tuples into a string and returns it.
         :return: fstring
@@ -225,7 +229,7 @@ class MovieApp:
             return f"{a_list[0][0]}, {a_list[0][1]}"
 
     @staticmethod
-    def get_float_input(self, prompt: str):
+    def get_float_input(prompt: str):
         """
         validates user input if its empty or able to convert into float
         :return: None or Converted Input
@@ -240,7 +244,7 @@ class MovieApp:
                 print("Invalid, please enter a number!")
 
     @staticmethod
-    def get_int_input(self, prompt: str):
+    def get_int_input(prompt: str):
         """
         validates user input if its empty or able to convert into float
         :return: None or Converted Input
@@ -253,3 +257,8 @@ class MovieApp:
                 return float(user_input)
             except ValueError:
                 print("Invalid, please enter a number!")
+
+    def run(self):
+        from classes.movie_menu import MovieMenu
+        movie_menu = MovieMenu()
+        movie_menu.run(self)
