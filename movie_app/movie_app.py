@@ -13,8 +13,6 @@ class MovieApp:
 
         load_dotenv()
         self._api_key = os.getenv('API_KEY')
-        print(self._api_key)
-
 
     def list_movies(self):
         """
@@ -64,8 +62,11 @@ class MovieApp:
     def _extract_info_from_movie_dict(res: dict) -> tuple[str, int, float, str]:
         """Grabs only needed information from dictionary, saves into variable and returns a tuple"""
         title = res["Title"]
-        year = int(res["Year"])
-        rating = float(res['imdbRating'])
+        year = int(res["Year"][0:4])
+        try: # If movie got no rating return default rating -> 0.0
+            rating = float(res['imdbRating'])
+        except ValueError:
+            rating = 0.0
         poster = res['Poster']
         return title, year, rating, poster
 
