@@ -28,7 +28,7 @@ class StorageJson(IStorage):
             data = json.load(file_reader)
         return data
 
-    def write_movies_data(self, title: str, year: int, rating: float, *poster) -> None:
+    def write_movies_data(self, title: str, year: int, rating: float, poster_url: str) -> None:
         """
         Adds a movie to the database.
         Loads the information from the JSON file, add the movie,
@@ -38,7 +38,8 @@ class StorageJson(IStorage):
         movies.append({
             "title": title,
             "year": year,
-            "rating": rating
+            "rating": rating,
+            "poster_url": poster_url
         })
 
         with open(self._filepath, "w") as file_writer:
@@ -94,6 +95,8 @@ class StorageJson(IStorage):
                     data = json.load(json_file)
                     if len(data) >= 1 and data != "[]":
                         return True
+                    else:
+                        self.write_default_data()
             except json.decoder.JSONDecodeError:
                 print("File data missing or corrupted, creating default Data")
                 self.write_default_data()
@@ -107,7 +110,8 @@ class StorageJson(IStorage):
         default_data = [{
             "title": "Fight Club",
             "year": 1999,
-            "rating": 8.8
+            "rating": 8.8,
+            "poster_url": "https://m.media-amazon.com/images/M/MV5BOTgyOGQ1NDItNGU3Ny00MjU3LTg2YWEtNmEyYjBiMjI1Y2M5XkEyXkFqcGc@._V1_SX300.jpg"
         }]
         with open(self._filepath, "w") as file_writer:
             json.dump(default_data, file_writer, indent=4)
