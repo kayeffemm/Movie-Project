@@ -1,9 +1,8 @@
 import statistics, random, requests, os
-from classes.istorage import IStorage
+from storage.istorage import IStorage
 from dotenv import load_dotenv
 
 
-# noinspection PyPackageRequirements
 class MovieApp:
     def __init__(self, storage, html_template_path: str, html_output_path: str) -> None:
         if not isinstance(storage, IStorage):
@@ -250,7 +249,7 @@ class MovieApp:
 
     def generate_website(self):
         """"""
-        from classes.website_generator import WebsiteGenerator
+        from movie_app.website_generator import WebsiteGenerator
         movies = self._storage.get_movies_data()
         generator = WebsiteGenerator(movies, self._html_template_path, self._html_output_path)
         generator.generate_website()
@@ -302,7 +301,7 @@ class MovieApp:
 
     def run(self) -> None:
         """Instantiates MovieMenu to run the menu"""
-        from classes.movie_menu import MovieMenu
+        from movie_app.movie_menu import MovieMenu
         movie_menu = MovieMenu()
         movie_menu.run(self)
 

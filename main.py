@@ -1,6 +1,6 @@
-from classes.movie_app import MovieApp
-from classes.storage_json import StorageJson
-from classes.storage_csv import StorageCSV
+from movie_app.movie_app import MovieApp
+from storage.storage_json import StorageJson
+from storage.storage_csv import StorageCSV
 
 
 HTML_TEMPLATE_PATH = 'static/index_template.html'

@@ -1,4 +1,3 @@
-
 class WebsiteGenerator:
     def __init__(self, movies: list[dict], html_template_path: str, html_output_path: str) -> None:
         """initialize Placeholder constant and movie variable"""

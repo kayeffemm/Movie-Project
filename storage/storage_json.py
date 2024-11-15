@@ -1,6 +1,6 @@
 import json
 import os.path
-from classes.istorage import IStorage
+from storage.istorage import IStorage
 
 
 class StorageJson(IStorage):

@@ -1,6 +1,7 @@
 import csv
 import os.path
-from classes.istorage import IStorage
+from storage.istorage import IStorage
+
 
 class StorageCSV(IStorage):
     """Handle data when working with a CSV"""
