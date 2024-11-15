@@ -5,10 +5,12 @@ from dotenv import load_dotenv
 
 # noinspection PyPackageRequirements
 class MovieApp:
-    def __init__(self, storage):
+    def __init__(self, storage, html_template_path: str, html_output_path: str) -> None:
         if not isinstance(storage, IStorage):
             raise TypeError(f"Expected storage to be instance of IStorage, got {type(storage).__name__} instead.")
         self._storage = storage
+        self._html_template_path = html_template_path
+        self._html_output_path = html_output_path
 
         load_dotenv()
         self._api_key = os.getenv('API_KEY')
@@ -248,7 +250,10 @@ class MovieApp:
 
     def generate_website(self):
         """"""
-        pass
+        from classes.website_generator import WebsiteGenerator
+        movies = self._storage.get_movies_data()
+        generator = WebsiteGenerator(movies, self._html_template_path, self._html_output_path)
+        generator.generate_website()
 
     @staticmethod
     def get_printable_string_from_tuple(a_list: list[tuple]) -> str:
