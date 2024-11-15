@@ -32,7 +32,7 @@ class StorageCSV(IStorage):
                 movies.append(row)
         return movies
 
-    def write_movies_data(self, title: str, year: int, rating: float, *poster) -> None:
+    def write_movies_data(self, title: str, year: int, rating: float, poster_url: str) -> None:
         """
         Adds a movie to the database.
         Loads the information from the CSV file, adds the movie,
@@ -42,11 +42,12 @@ class StorageCSV(IStorage):
         movies.append({
             "title": title,
             "year": year,
-            "rating": rating
+            "rating": rating,
+            "poster_url": poster_url
         })
 
         with open(self._filepath, "w", newline='', encoding='utf-8') as file_writer:
-            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating"])
+            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating", "poster_url"])
             csv_writer.writeheader()
             csv_writer.writerows(movies)
 
@@ -76,7 +77,7 @@ class StorageCSV(IStorage):
                 movie["rating"] = rating
 
         with open(self._filepath, "w", newline='', encoding='utf-8') as file_writer:
-            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating"])
+            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating", "poster_url"])
             csv_writer.writeheader()
             csv_writer.writerows(movies)
 
@@ -103,8 +104,11 @@ class StorageCSV(IStorage):
                 with open(self._filepath, "r", newline='', encoding='utf-8') as csv_file:
                     csv_reader = csv.reader(csv_file)
                     rows = list(csv_reader)
-                    if len(rows) > 1:
-                        return True
+                    if len(rows) <= 1:
+                        print("File is empty or contains only header, writing default data!")
+                        self.write_default_data()
+                        return False
+                return True
             except csv.Error:
                 print("File data missing or corrupted, creating default Data")
                 self.write_default_data()
@@ -118,9 +122,11 @@ class StorageCSV(IStorage):
         default_data = [{
             "title": "Fight Club",
             "year": 1999,
-            "rating": 8.8
+            "rating": 8.8,
+            "poster_url": "https://m.media-amazon.com/images/M/MV5BOTgyOGQ1NDItNGU3Ny00MjU3LTg2YWEtNmEyYjBiMjI1Y2M5XkEyXkFqcGc@._V1_SX300.jpg"
         }]
+
         with open(self._filepath, "w", newline='', encoding='utf-8') as file_writer:
-            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating"])
+            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating", "poster_url"])
             csv_writer.writeheader()
             csv_writer.writerows(default_data)
