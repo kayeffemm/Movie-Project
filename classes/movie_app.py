@@ -254,6 +254,7 @@ class MovieApp:
         movies = self._storage.get_movies_data()
         generator = WebsiteGenerator(movies, self._html_template_path, self._html_output_path)
         generator.generate_website()
+        print("Website successfully created!")
 
     @staticmethod
     def get_printable_string_from_tuple(a_list: list[tuple]) -> str:
