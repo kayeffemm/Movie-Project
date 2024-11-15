@@ -37,13 +37,15 @@ class WebsiteGenerator:
         movie_title = movie.get('title')
         movie_year = movie.get('year')
         movie_poster = movie.get('poster_url')
-        movie_note = movie.get('note')
+        movie_note = movie.get('note', '')
+        movie_rating = movie.get('rating')
 
         html_string = '\t\t<li>\n'
         html_string += '\t\t\t<div class="movie">\n'
         html_string += f'\t\t\t\t<img class="movie-poster" src="{movie_poster}" title="{movie_note}">\n'
         html_string += f'\t\t\t\t<div class="movie-title">{movie_title}</div>\n'
         html_string += f'\t\t\t\t<div class="movie-year">{movie_year}</div>\n'
+        html_string += f'\t\t\t\t<div class="movie-rating">IMDB: {movie_rating}</div>\n'
         html_string += '\t\t\t</div>\n'
         html_string += '\t\t</li>\n'
 

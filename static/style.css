@@ -1,13 +1,13 @@
 body {
-  background: #F5F5F0;
+  background: #2094D1;
   color: black;
-  font-family: Monaco;
+  font-family: Helvetica;
 }
 
 .list-movies-title {
   padding: 10px 0;
-  background: #009B50;
-  color: white;
+  background: #E0ECF8;
+  color: black;
   text-align: center;
   font-size: 16pt;
 }
@@ -31,7 +31,8 @@ body {
 }
 
 .movie-title,
-.movie-year {
+.movie-year,
+.movie-rating {
   font-size: 0.8em;
   text-align: center;
 }
@@ -41,9 +42,12 @@ body {
 }
 
 .movie-year {
-  color: #999;
+  color: black;
 }
 
+.movie-rating {
+  color: black;
+}
 
 .movie-poster {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
