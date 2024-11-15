@@ -1,12 +1,19 @@
-import statistics, random
+import statistics, random, requests, os
 from classes.istorage import IStorage
+from dotenv import load_dotenv
 
 
+# noinspection PyPackageRequirements
 class MovieApp:
     def __init__(self, storage):
         if not isinstance(storage, IStorage):
             raise TypeError(f"Expected storage to be instance of IStorage, got {type(storage).__name__} instead.")
         self._storage = storage
+
+        load_dotenv()
+        self._api_key = os.getenv('API_KEY')
+        print(self._api_key)
+
 
     def list_movies(self):
         """
@@ -28,29 +35,58 @@ class MovieApp:
         Then the inputs get parsed to self._storage.write_movie_data()
         """
         while True:
-            user_input_movie_title = input("Enter a movie Title: ")
-            if not user_input_movie_title.strip():
+            user_input_movie_title = input("Enter a movie Title: ").strip()
+            if not user_input_movie_title:
                 print("Movie name can't be empty")
-            else:
-                break
-        try:
-            while True:
-                try:
-                    user_input_release_year = int(input("Enter movie release year: "))
+            if user_input_movie_title:
+                res = self._get_movie_by_name_from_omdb_api(user_input_movie_title)
+                if res is not None:
+                    movie_title, movie_year, movie_rating, movie_poster_url = self._extract_info_from_movie_dict(res)
                     break
-                except ValueError:
-                    print("Invalid input, try again.")
-            while True:
-                try:
-                    user_input_movie_rating = float(input("Enter movie rating (1-10): "))
-                    break
-                except ValueError:
-                    print("Invalid input, try again.")
-        except Exception as e:
-            print(e)
+                else:
+                    print("Movie not found in OMDB, try again.")
+        if self._movie_already_exists(movie_title):
+            print(f"Movie {movie_title} already exists in your database.")
+        else:
+            self._storage.write_movies_data(movie_title, movie_year, movie_rating, movie_poster_url)
+            print(f"Movie {movie_title} successfully added")
 
-        self._storage.write_movies_data(user_input_movie_title, user_input_release_year, user_input_movie_rating)
-        print(f"Movie {user_input_movie_title} successfully added")
+    def _movie_already_exists(self, title: str) -> bool:
+        """Check current storage if movie is already present, returns bool"""
+        movie_exists = False
+        for item in self._storage.get_movies_data():
+            if title == item['title']:
+                movie_exists = True
+        return movie_exists
+
+    @staticmethod
+    def _extract_info_from_movie_dict(res: dict) -> tuple[str, int, float, str]:
+        """Grabs only needed information from dictionary, saves into variable and returns a tuple"""
+        title = res["Title"]
+        year = int(res["Year"])
+        rating = float(res['imdbRating'])
+        poster = res['Poster']
+        return title, year, rating, poster
+
+    def _get_movie_by_name_from_omdb_api(self, name: str) -> dict|None:
+        """
+        Parse movie name to OMDB API, fetch a JSON and convert to dict.
+        """
+        try:
+            res = requests.get(f'http://www.omdbapi.com/?i=tt3896198&apikey={self._api_key}&t={name}')
+            res = res.json()
+            if self._validate_request(res):
+                return res
+            else:
+                return None
+        except Exception as e:
+            print("Error:", e)
+            return None
+
+    @staticmethod
+    def _validate_request(res: dict) -> bool:
+        """Check if returned dict from request has valid data"""
+        return 'Title' in res.keys()
 
     def delete_movie(self):
         """
@@ -263,3 +299,4 @@ class MovieApp:
         from classes.movie_menu import MovieMenu
         movie_menu = MovieMenu()
         movie_menu.run(self)
+
