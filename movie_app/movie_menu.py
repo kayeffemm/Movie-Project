@@ -14,7 +14,7 @@ class MovieMenu:
         7. Movies sorted by rating
         8. Movies sorted by year
         9. List all movies
-        10. Update movie rating
+        10. Update movie
         11. Generate Website
         Q. Quit
         """

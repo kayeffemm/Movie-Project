@@ -22,10 +22,11 @@ class MovieApp:
         movies = self._storage.get_movies_data()
         print(f"{len(movies)} movies in total")
         for movie in movies:
-            movie_name = movie["title"]
-            movie_rating = movie["rating"]
-            movie_year = movie["year"]
-            print(f"{movie_name} ({movie_year}): {movie_rating}")
+            movie_name = movie.get('title')
+            movie_rating = movie.get('rating')
+            movie_year = movie.get('year')
+            movie_note = movie.get('note', 'Add a Note')
+            print(f"{movie_name} ({movie_year}): {movie_rating}, Note: {movie_note}")
 
     def add_movies(self):
         """
@@ -109,22 +110,22 @@ class MovieApp:
     def update_movie(self):
         """
         Asks user for movie name to update.
-        If movie exist in database user is prompted to enter a new rating.
+        If movie exist in database user is prompted to enter a note for the movie.
         If movie doesn't exist prints an error message.
         """
         movies = self._storage.get_movies_data()
         movie_titles = [movie["title"] for movie in movies]
-        user_input_movie_name = input("Enter name of movie you want to update: ")
+        user_input_movie_name = input("Enter name of movie you want to add a note to: ")
 
         if user_input_movie_name in movie_titles:
             while True:
                 try:
-                    user_input_new_rating = float(input("Enter new movie rating: "))
-                    self._storage.update_movie_data(user_input_movie_name, user_input_new_rating)
-                    print("rating successfully changed!")
+                    user_input_note = (input("Enter movie note: "))
+                    self._storage.update_movie_data(user_input_movie_name, user_input_note)
+                    print("Note successfully added!")
                     break
                 except ValueError:
-                    print("Please enter a valid rating")
+                    print("Please enter a valid note!")
         else:
             print(f"Movie {user_input_movie_name} doesn't exist!")
 

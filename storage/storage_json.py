@@ -57,7 +57,7 @@ class StorageJson(IStorage):
         with open(self._filepath, "w") as file_writer:
             json.dump(movies, file_writer, indent=4)
 
-    def update_movie_data(self, title: str, rating: float) -> None:
+    def update_movie_data(self, title: str, note: str) -> None:
         """
         Updates a movie from the database.
         Loads the information from get_movies_data(), updates the movie,
@@ -65,7 +65,7 @@ class StorageJson(IStorage):
         """
         movies = self.get_movies_data()
         index_of_dictionary_to_update = next(i for i, movie in enumerate(movies) if movie["title"] == title)
-        movies[index_of_dictionary_to_update]["rating"] = rating
+        movies[index_of_dictionary_to_update]["note"] = note
 
         with open(self._filepath, "w") as file_writer:
             json.dump(movies, file_writer, indent=4)

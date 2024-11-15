@@ -48,7 +48,7 @@ class StorageCSV(IStorage):
         })
 
         with open(self._filepath, "w", newline='', encoding='utf-8') as file_writer:
-            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating", "poster_url"])
+            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating", "poster_url", "note"])
             csv_writer.writeheader()
             csv_writer.writerows(movies)
 
@@ -62,11 +62,11 @@ class StorageCSV(IStorage):
         movies = [movie for movie in movies if movie["title"] != title]
 
         with open(self._filepath, "w", newline='', encoding='utf-8') as file_writer:
-            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating"])
+            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating", "poster_url", "note"])
             csv_writer.writeheader()
             csv_writer.writerows(movies)
 
-    def update_movie_data(self, title: str, rating: float) -> None:
+    def update_movie_data(self, title: str, note: str) -> None:
         """
         Updates a movie in the database.
         Loads the information from get_movies_data(), updates the movie,
@@ -75,10 +75,10 @@ class StorageCSV(IStorage):
         movies = self.get_movies_data()
         for movie in movies:
             if movie["title"] == title:
-                movie["rating"] = rating
+                movie["note"] = note
 
         with open(self._filepath, "w", newline='', encoding='utf-8') as file_writer:
-            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating", "poster_url"])
+            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating", "poster_url", "note"])
             csv_writer.writeheader()
             csv_writer.writerows(movies)
 
@@ -128,6 +128,6 @@ class StorageCSV(IStorage):
         }]
 
         with open(self._filepath, "w", newline='', encoding='utf-8') as file_writer:
-            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating", "poster_url"])
+            csv_writer = csv.DictWriter(file_writer, fieldnames=["title", "year", "rating", "poster_url", "note"])
             csv_writer.writeheader()
             csv_writer.writerows(default_data)

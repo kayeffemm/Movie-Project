@@ -21,7 +21,7 @@ class IStorage(ABC):
         pass
 
     @abstractmethod
-    def update_movie_data(self, title: str, rating: float) -> None:
+    def update_movie_data(self, title: str, note: str) -> None:
         """Update movie data in database"""
         pass
 
